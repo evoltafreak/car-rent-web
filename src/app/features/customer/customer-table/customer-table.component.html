@@ -1,0 +1,87 @@
+<div class="customer-table" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Kunden werden geladen"></cr-loading-bar>
+  <div [ngStyle]="{'visibility': isLoading ? 'hidden' : 'visible'}" fxLayout="column" fxLayoutGap="10px">
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-form-field [fxFlex]="40">
+        <input matInput (keyup)="fuzzySearch($event.target.value)" placeholder="Kunden durchsuchen...">
+      </mat-form-field>
+      <button mat-flat-button color="primary" [routerLink]="['/customer', 'new']"><mat-icon>add</mat-icon> Kunde hinzufügen</button>
+    </div>
+
+    <table mat-table matSort [dataSource]="customerList" class="mat-elevation-z2">
+
+      <!-- Header -->
+      <ng-container matColumnDef="header">
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="8">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <h2>{{title}}</h2>
+            <div fxFlex></div>
+            <mat-icon svgIcon="download" (click)="exportCsv()" matTooltip="CSV Export"></mat-icon>
+          </div>
+        </th>
+      </ng-container>
+
+      <!-- Aktion -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Aktion</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon [routerLink]="['/customer', row.idCustomer]" color="primary" matTooltip="Kunden anzeigen">edit
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- ID -->
+      <ng-container matColumnDef="idCustomer">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row"> {{row.idCustomer}} </td>
+      </ng-container>
+
+      <!-- Vorname -->
+      <ng-container matColumnDef="firstname">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Vorname</th>
+        <td mat-cell *matCellDef="let row"> {{row.firstname}} </td>
+      </ng-container>
+
+      <!-- Nachname -->
+      <ng-container matColumnDef="lastname">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Nachname</th>
+        <td mat-cell *matCellDef="let row"> {{row.lastname}} </td>
+      </ng-container>
+
+      <!-- Ort -->
+      <ng-container matColumnDef="place">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Ort</th>
+        <td mat-cell *matCellDef="let row"> {{row.place.place}} </td>
+      </ng-container>
+
+      <!-- PLZ -->
+      <ng-container matColumnDef="zipCode">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>PLZ</th>
+        <td mat-cell *matCellDef="let row"> {{row.place.zipCode}} </td>
+      </ng-container>
+
+      <!-- Adresse -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Adresse</th>
+        <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+      </ng-container>
+
+      <!-- Adresse Nr. -->
+      <ng-container matColumnDef="addressNr">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Adresse Nr.</th>
+        <td mat-cell *matCellDef="let row"> {{row.addressNr}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['header']"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mat-elevation-z2"></mat-paginator>
+
+  </div>
+
+</div>
+
+

@@ -1,0 +1,65 @@
+<div class="customer-detail" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Kunde wird geladen"></cr-loading-bar>
+  <div *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="10px" [fxFlex]="50">
+
+    <!-- ID -->
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-chip-list *ngIf="!car.idCar">
+        <mat-chip color="primary" selected><mat-icon>info</mat-icon>&nbsp;&nbsp;Neuer Kunde</mat-chip>
+      </mat-chip-list>
+      <mat-form-field *ngIf="car.idCar" [fxFlex]="20">
+        <input matInput formControlName="idCar" placeholder="ID"/>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Marke -->
+      <mat-form-field [fxFlex]="40">
+        <mat-label>Typ</mat-label>
+        <mat-select formControlName="carMake" placeholder="Marke" required>
+          <mat-option *ngFor="let carMake of carMakeList" [value]="carMake.idCarMake" >
+            {{carMake.carMake}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['carType'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Typ -->
+      <mat-form-field [fxFlex]="40">
+        <mat-label>Typ</mat-label>
+        <mat-select formControlName="carType" placeholder="Typ" required>
+          <mat-option *ngFor="let carType of carTypeList" [value]="carType.idCarType" >
+            {{carType.carType}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['carType'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Name -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="carName" placeholder="Name" required/>
+        <mat-error *ngIf="form.controls['carName'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Gebühr -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="fee" placeholder="Gebühr" type="number" required/>
+        <mat-error *ngIf="form.controls['fee'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <button mat-stroked-button [routerLink]="['/car']">Zurück</button>
+      <button mat-flat-button color="primary" [disabled]="form.pristine || form.invalid" (click)="saveCar()">Speichern</button>
+      <button mat-flat-button color="warn" (click)="deleteCar()">Löschen</button>
+    </div>
+
+  </div>
+</div>
+

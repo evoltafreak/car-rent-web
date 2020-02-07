@@ -1,0 +1,4 @@
+<div *ngIf="isLoading"  fxLayout="column" fxLayoutGap="5px">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  <div style="font-style:italic">{{text ? text : 'Daten werden geladen'}}...</div>
+</div>

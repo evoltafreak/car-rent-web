@@ -1,0 +1,75 @@
+<div class="car-table" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Autos werden geladen"></cr-loading-bar>
+  <div [ngStyle]="{'visibility': isLoading ? 'hidden' : 'visible'}" fxLayout="column" fxLayoutGap="10px">
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-form-field [fxFlex]="40">
+        <input matInput (keyup)="fuzzySearch($event.target.value)" placeholder="Autos durchsuchen...">
+      </mat-form-field>
+      <button mat-flat-button color="primary" [routerLink]="['/car', 'new']"><mat-icon>add</mat-icon> Auto hinzufügen</button>
+    </div>
+
+    <table mat-table matSort [dataSource]="carList" class="mat-elevation-z2">
+
+      <!-- Header -->
+      <ng-container matColumnDef="header">
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="8">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <h2>{{title}}</h2>
+            <div fxFlex></div>
+            <mat-icon svgIcon="download" (click)="exportCsv()" matTooltip="CSV Export"></mat-icon>
+          </div>
+        </th>
+      </ng-container>
+
+      <!-- Aktion -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Aktion</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon [routerLink]="['/car', row.idCar]" color="primary" matTooltip="Auto anzeigen">edit
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- ID -->
+      <ng-container matColumnDef="idCar">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row"> {{row.idCar}} </td>
+      </ng-container>
+
+      <!-- Marke -->
+      <ng-container matColumnDef="carMake">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Marke</th>
+        <td mat-cell *matCellDef="let row"> {{row.carMake.carMake}} </td>
+      </ng-container>
+
+      <!-- Typ -->
+      <ng-container matColumnDef="carType">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Typ</th>
+        <td mat-cell *matCellDef="let row"> {{row.carType.carType}} </td>
+      </ng-container>
+
+      <!-- Name -->
+      <ng-container matColumnDef="carName">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let row"> {{row.carName}} </td>
+      </ng-container>
+
+      <!-- Gebühr -->
+      <ng-container matColumnDef="fee">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Gebühr</th>
+        <td mat-cell *matCellDef="let row"> {{row.fee | number:'1.2-2'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['header']"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mat-elevation-z2"></mat-paginator>
+
+  </div>
+
+</div>
+
+

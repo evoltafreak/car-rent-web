@@ -1,0 +1,65 @@
+<div class="customer-detail" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Kunde wird geladen"></cr-loading-bar>
+  <div *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="10px" [fxFlex]="50">
+
+    <!-- ID -->
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-chip-list *ngIf="!customer.idCustomer">
+        <mat-chip color="primary" selected><mat-icon>info</mat-icon>&nbsp;&nbsp;Neuer Kunde</mat-chip>
+      </mat-chip-list>
+      <mat-form-field *ngIf="customer.idCustomer" [fxFlex]="20">
+        <input matInput formControlName="idCustomer" placeholder="ID"/>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Vorname -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="firstname" placeholder="Vorname" required/>
+        <mat-error *ngIf="form.controls['firstname'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Nachname -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="lastname" placeholder="Nachname" required/>
+        <mat-error *ngIf="form.controls['lastname'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- PLZ -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="zipCode" placeholder="PLZ" required/>
+        <mat-error *ngIf="form.controls['zipCode'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Ort -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="place" placeholder="Ort" required/>
+        <mat-error *ngIf="form.controls['place'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Adresse -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="address" placeholder="Adresse" required/>
+        <mat-error *ngIf="form.controls['address'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Adresse Nr. -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="addressNr" placeholder="Adresse Nr."/>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <button mat-stroked-button [routerLink]="['/customer']">Zurück</button>
+      <button mat-flat-button color="primary" [disabled]="form.pristine || form.invalid" (click)="saveCustomer()">Speichern</button>
+      <button mat-flat-button color="warn" (click)="deleteCustomer()">Löschen</button>
+    </div>
+
+  </div>
+</div>
+
