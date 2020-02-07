@@ -82,7 +82,7 @@ import { LoadingBarComponent } from './loading-bar/loading-bar.component';
   declarations: [TableOfContentsComponent, LoadingBarComponent]
 })
 export class SharedModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<SharedModule> {
     return {
       ngModule: SharedModule
     };

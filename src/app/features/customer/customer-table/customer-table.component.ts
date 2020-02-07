@@ -23,10 +23,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   private _onDestroy = new Subject<void>();
 
-  @ViewChild(MatPaginator, {static: false})
+  @ViewChild(MatPaginator)
   public paginator: MatPaginator;
 
-  @ViewChild(MatSort, {static: false})
+  @ViewChild(MatSort)
   public sort: MatSort;
 
   constructor(private customerService: CustomerService,
