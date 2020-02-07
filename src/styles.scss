@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/theming';
+
+$warn: mat-palette($mat-red);
+$success: mat-palette($mat-green);
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.cr-snackbar-error {
+  background-color: mat-color($warn);
+  color: white;
+  font-weight: bold;
+  .mat-button {
+    color: white;
+  }
+}
+
+.cr-snackbar-success {
+  background-color: mat-color($success);
+  color: white;
+  font-weight: bold;
+  .mat-button {
+    color: white;
+  }
+}

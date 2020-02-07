@@ -1,0 +1,45 @@
+.cr-main {
+  margin: 20px;
+}
+
+.mat-flat-button {
+  width: 100%;
+}
+
+.cr-container {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+}
+
+.cr-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+}
+
+.cr-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.cr-footer {
+  font-size: 16px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.mat-icon {
+  cursor: pointer;
+}
+
+.mat-flat-button {
+  border-radius: 0px;
+}
