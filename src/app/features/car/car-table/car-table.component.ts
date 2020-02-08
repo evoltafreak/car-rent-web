@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Car } from '../../../../generated';
 import { CarService } from '../../../../generated/api/car.service';
 import { Subject } from 'rxjs';
@@ -19,6 +21,8 @@ export class CarTableComponent implements OnInit, OnDestroy {
   public displayedColumns = ['action', 'idCar', 'carMake', 'carType', 'carName', 'fee'];
 
   public isLoading: boolean;
+
+  public isFooter: boolean;
 
   private _onDestroy = new Subject<void>();
 

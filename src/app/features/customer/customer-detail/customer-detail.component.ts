@@ -4,7 +4,7 @@ import { Customer, CustomerService } from '../../../../generated';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Place } from '../../../../generated/model/place';
 
 @Component({

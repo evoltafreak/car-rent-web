@@ -1,6 +1,5 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
-import 'hammerjs';
-import { MAT_DATE_LOCALE } from '@angular/material';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [],

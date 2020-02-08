@@ -6,7 +6,7 @@ import { NavigationStart, Router, RouterEvent } from '@angular/router';
 import { animate, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Menu } from './menu';
 import { environment } from '../environments/environment';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MenuService } from './core/menu/menu-service';
 

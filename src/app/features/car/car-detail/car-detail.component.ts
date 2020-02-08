@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Car } from '../../../../generated';
 import { forkJoin, Subject } from 'rxjs';
 import { ActivatedRoute, Params } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntil } from 'rxjs/operators';
 import { CarService } from '../../../../generated/api/car.service';
 import { CarMake } from '../../../../generated/model/carMake';

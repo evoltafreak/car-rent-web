@@ -9,17 +9,16 @@ import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {
-  MatChipsModule,
-  MatDividerModule,
-  MatFormFieldModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule, MatSelectModule,
-  MatSidenavModule,
-  MatSnackBarModule,
-  MatToolbarModule,
-  MatTooltipModule
-} from '@angular/material';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule } from '@angular/common/http';
 import { PaginatorLabelService } from '../core/paginator/paginator-label.service';
 import { TableOfContentsComponent } from './toc/table-of-contents.component';

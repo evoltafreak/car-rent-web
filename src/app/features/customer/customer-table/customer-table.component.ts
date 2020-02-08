@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Car, Customer, CustomerService } from '../../../../generated';
-import { MatPaginator, MatSnackBar, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CsvService } from '../../../core/csv/csv-service';
@@ -20,6 +23,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public displayedColumns = ['action', 'idCustomer', 'firstname', 'lastname', 'place', 'zipCode', 'address', 'addressNr'];
 
   public isLoading: boolean;
+
+  public isFooter: boolean;
 
   private _onDestroy = new Subject<void>();
 
@@ -55,11 +60,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         };
         this.customerList.sort = this.sort;
         this.isLoading = false;
+        this.isFooter = false;
       }, () => {
         this.snackBar.open('Kunden laden fehlgeschlagen.', 'X', {
           panelClass: ['cr-snackbar-error']
         });
         this.isLoading = false;
+        this.isFooter = true;
       });
   }
 
