@@ -84,7 +84,7 @@ export class CarDetailComponent implements OnInit, OnDestroy {
       carMake: new FormControl(this.car.carMake.carMake, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
       carType: new FormControl(this.car.carType.idCarType, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
       carName: new FormControl(this.car.carName, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
-      fee: new FormControl(this.car.fee, Validators.compose([Validators.maxLength(this.strLimit), Validators.required]))
+      fee: new FormControl(this.car.carClass.fee, Validators.compose([Validators.maxLength(this.strLimit), Validators.required]))
     });
   }
 
@@ -93,7 +93,7 @@ export class CarDetailComponent implements OnInit, OnDestroy {
       this.car.carMake.carMake = this.form.get('carMake').value;
       this.car.carType.carType = this.form.get('carType').value;
       this.car.carName = this.form.get('carName').value;
-      this.car.fee = this.form.get('fee').value;
+      this.car.carNr = this.form.get('carNr').value;
       this.carService.updateCar(this.car)
         .pipe(takeUntil(this._onDestroy))
         .subscribe(() => {

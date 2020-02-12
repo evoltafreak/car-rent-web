@@ -1,6 +1,6 @@
 /**
- * OpenAPI ZbW car rent
- * zbw car rent api
+ * OpenAPI car rent
+ * car rent api
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CarMake } from './carMake';
+import { CarClass } from './carClass';
 import { CarType } from './carType';
 
 
@@ -20,7 +21,8 @@ export interface Car {
     idCar?: number;
     carMake?: CarMake;
     carName?: string;
+    carNr?: string;
     carType?: CarType;
-    fee?: number;
+    carClass?: CarClass;
 }
 

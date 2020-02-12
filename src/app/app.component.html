@@ -1,5 +1,5 @@
 <mat-toolbar class="cr-header">
-  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center" style="cursor:pointer" [routerLink]="['/', '']">
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center" style="cursor:pointer" [routerLink]="['/']">
     <mat-icon>directions_car</mat-icon>
     <div>Car Rent</div>
     <mat-icon *ngIf="!isNavOpen" (click)="isNavOpen = !isNavOpen" matTooltip="Menü aufklappen" matTooltipPosition="right">menu</mat-icon>
@@ -10,7 +10,7 @@
 <mat-sidenav-container class="cr-container">
   <mat-sidenav mode="side" [(opened)]="isNavOpen" class="cr-sidenav">
     <ng-container *ngFor="let menu of menuList">
-      <button mat-flat-button [routerLink]="['/' + menu.route]" [ngStyle]="activeMenu.route === menu.route ? activeColor : {}">
+      <button *ngIf="menu?.route !== '404'" mat-flat-button [routerLink]="['/' + menu.route]" [ngStyle]="activeMenu.route === menu.route ? activeColor : {}">
         <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
           <mat-icon [color]="activeMenu.route === menu.route ? 'primary' : null">{{menu.icon}}</mat-icon>
           <span>{{menu.label}}</span>
@@ -21,13 +21,13 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="cr-main">
-      <div fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="start center">
+      <div *ngIf="activeMenu" fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="start center">
         <a [routerLink]="['/']">Home</a>
         <mat-icon [routerLink]="['/' + activeMenu.route]">arrow_right</mat-icon>
         <a [routerLink]="['/' + activeMenu.route]">{{activeMenu.label}}</a>
       </div>
 
-      <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <div *ngIf="activeMenu" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
         <mat-icon [routerLink]="['/']" matTooltip="Zurück">keyboard_backspace</mat-icon>
         <h2>{{activeMenu.label}}</h2>
       </div>

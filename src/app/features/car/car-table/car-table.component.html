@@ -26,7 +26,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Aktion</th>
         <td mat-cell *matCellDef="let row">
-          <mat-icon [routerLink]="['/car', row.idCar]" color="primary" matTooltip="Auto anzeigen">edit
+          <mat-icon [routerLink]="['/car', row.idCar]" color="primary" matTooltip="Auto bearbeiten">edit
           </mat-icon>
         </td>
       </ng-container>
@@ -58,7 +58,7 @@
       <!-- Gebühr -->
       <ng-container matColumnDef="fee">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Gebühr</th>
-        <td mat-cell *matCellDef="let row"> {{row.fee | number:'1.2-2'}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.carClass.fee | number:'1.2-2'}} </td>
       </ng-container>
 
       <!-- Footer -->

@@ -1,6 +1,6 @@
 /**
- * OpenAPI ZbW car rent
- * zbw car rent api
+ * OpenAPI car rent
+ * car rent api
  *
  * The version of the OpenAPI document: 1.0.0
  * 
@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { Car } from './car';
+import { Customer } from './customer';
 
 
 /**
@@ -19,6 +20,10 @@ export interface Reservation {
     idReservation?: number;
     car?: Car;
     days?: number;
-    isTaken?: boolean;
+    price?: number;
+    reservationNr?: string;
+    pickUpDate?: Date;
+    isLease?: boolean;
+    customer?: Customer;
 }
 
