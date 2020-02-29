@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Reservation } from '../../../../generated';
+import { Customer, Reservation } from '../../../../generated';
 import { Subject } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -75,6 +75,17 @@ export class ReservationTableComponent implements OnInit, OnDestroy {
 
   public fuzzySearch(search: string) {
     this.reservationList.filter = search.trim().toLowerCase();
+  }
+
+  public deleteReservation(idReservation: number) {
+    this.reservationService.deleteReservationById(idReservation)
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.snackBar.open('Reservation löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+        this.reservationList = new MatTableDataSource<Reservation>(this.reservationList.data.filter(c => c.idReservation !== idReservation));
+      }, () => {
+        this.snackBar.open('Reservation löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+      });
   }
 
   public exportCsv() {

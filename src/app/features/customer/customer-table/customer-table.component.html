@@ -25,8 +25,10 @@
       <!-- Aktion -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Aktion</th>
-        <td mat-cell *matCellDef="let row">
+        <td mat-cell *matCellDef="let row" fxLayoutGap="5px">
           <mat-icon [routerLink]="['/customer', row.idCustomer]" color="primary" matTooltip="Kunde bearbeiten">edit
+          </mat-icon>
+          <mat-icon (click)="deleteCustomer(row.idCustomer)" color="warn" matTooltip="Kunde löschen">delete
           </mat-icon>
         </td>
       </ng-container>

@@ -74,6 +74,17 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.customerList.filter = search.trim().toLowerCase();
   }
 
+  public deleteCustomer(idCustomer: number) {
+    this.customerService.deleteCustomerById(idCustomer)
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+        this.customerList = new MatTableDataSource<Customer>(this.customerList.data.filter(c => c.idCustomer !== idCustomer));
+      }, () => {
+        this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+      });
+  }
+
   public exportCsv() {
     const headers = ['ID', 'Vorname', 'Nachname', 'Ort', 'PLZ', 'Adresse', 'Adresse Nr.'];
     const keys = this.displayedColumns.filter((val: string) => val !== 'aktion');

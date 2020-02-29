@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Car } from '../../../../generated';
+import { Car, Reservation } from '../../../../generated';
 import { CarService } from '../../../../generated/api/car.service';
 import { Subject } from 'rxjs';
 import { DateService } from '../../../core/date/date-service';
 import { CsvService } from '../../../core/csv/csv-service';
+import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'cr-car-table',
@@ -33,7 +35,8 @@ export class CarTableComponent implements OnInit, OnDestroy {
   public sort: MatSort;
 
   constructor(private carService: CarService,
-              private csvService: CsvService) {
+              private csvService: CsvService,
+              private snackBar: MatSnackBar) {
 
   }
 
@@ -56,11 +59,28 @@ export class CarTableComponent implements OnInit, OnDestroy {
         };
         this.carList.sort = this.sort;
         this.isLoading = false;
+      }, () => {
+        this.snackBar.open('Autos laden fehlgeschlagen.', 'X', {
+          panelClass: ['cr-snackbar-error']
+        });
+        this.isLoading = false;
+        this.isFooter = true;
       });
   }
 
   public fuzzySearch(search: string) {
     this.carList.filter = search.trim().toLowerCase();
+  }
+
+  public deleteCar(idCar: number) {
+    this.carService.deleteCarById(idCar)
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(() => {
+        this.snackBar.open('Auto löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+        this.carList = new MatTableDataSource<Car>(this.carList.data.filter(c => c.idCar !== idCar));
+      }, () => {
+        this.snackBar.open('Auto löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+      });
   }
 
   public exportCsv() {
