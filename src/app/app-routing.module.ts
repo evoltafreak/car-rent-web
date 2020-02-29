@@ -5,7 +5,8 @@ import { NotFoundComponent } from './features/not-found/not-found.component';
 
 
 const routes: Routes = [
-  {path: '', component: WelcomeComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: 'home', component: WelcomeComponent},
   {path: 'customer', loadChildren: () => import('./features/customer/customer.module').then(m => m.CustomerModule)},
   {path: 'car', loadChildren: () => import('./features/car/car.module').then(m => m.CarModule)},
   {path: 'reservation', loadChildren: () => import('./features/reservation/reservation.module').then(m => m.ReservationModule)},

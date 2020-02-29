@@ -15,7 +15,7 @@
     <div fxLayout="row" fxLayoutGap="5px">
       <!-- Marke -->
       <mat-form-field [fxFlex]="40">
-        <mat-label>Typ</mat-label>
+        <mat-label>Marke</mat-label>
         <mat-select formControlName="carMake" placeholder="Marke" required>
           <mat-option *ngFor="let carMake of carMakeList" [value]="carMake.idCarMake" >
             {{carMake.carMake}}
@@ -38,26 +38,36 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Klasse -->
+      <mat-form-field [fxFlex]="40">
+        <mat-label>Klasse</mat-label>
+        <mat-select formControlName="carClass" placeholder="Klasse" required>
+          <mat-option *ngFor="let carClass of carClassList" [value]="carClass.idCarClass" >
+            {{carClass.carClass}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['carType'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
       <!-- Name -->
       <mat-form-field [fxFlex]="40">
         <input matInput formControlName="carName" placeholder="Name" required/>
         <mat-error *ngIf="form.controls['carName'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
       </mat-form-field>
-    </div>
 
-
-    <div fxLayout="row" fxLayoutGap="5px">
-      <!-- Gebühr -->
+      <!-- Auto-Nr. -->
       <mat-form-field [fxFlex]="40">
-        <input matInput formControlName="fee" placeholder="Gebühr" type="number" required/>
-        <mat-error *ngIf="form.controls['fee'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+        <input matInput formControlName="carNr" placeholder="Auto-Nr." required/>
+        <mat-error *ngIf="form.controls['carNr'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
       </mat-form-field>
     </div>
 
     <div fxLayout="row" fxLayoutGap="5px">
       <button mat-stroked-button [routerLink]="['/car']">Zurück</button>
       <button mat-flat-button color="primary" [disabled]="form.pristine || form.invalid" (click)="saveCar()">Speichern</button>
-      <button mat-flat-button color="warn" (click)="deleteCar()">Löschen</button>
+      <button mat-flat-button color="warn" (click)="deleteCar()" *ngIf="car.idCar">Löschen</button>
     </div>
 
   </div>

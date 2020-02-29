@@ -21,13 +21,13 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="cr-main">
-      <div *ngIf="activeMenu" fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="start center">
+      <div *ngIf="activeMenu && activeMenu.route !== 'home' && activeMenu.route !== '404'" fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="start center">
         <a [routerLink]="['/']">Home</a>
         <mat-icon [routerLink]="['/' + activeMenu.route]">arrow_right</mat-icon>
         <a [routerLink]="['/' + activeMenu.route]">{{activeMenu.label}}</a>
       </div>
 
-      <div *ngIf="activeMenu" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
+      <div *ngIf="activeMenu && activeMenu.route !== 'home' && activeMenu.route !== '404'" fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="start center">
         <mat-icon [routerLink]="['/']" matTooltip="Zurück">keyboard_backspace</mat-icon>
         <h2>{{activeMenu.label}}</h2>
       </div>

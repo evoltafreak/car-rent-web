@@ -1,0 +1,83 @@
+<div class="reservation-detail" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Reservation wird geladen"></cr-loading-bar>
+  <div *ngIf="form" [formGroup]="form" fxLayout="column" fxLayoutGap="10px" [fxFlex]="50">
+
+    <!-- ID -->
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-chip-list *ngIf="!reservation.idReservation">
+        <mat-chip color="primary" selected><mat-icon>info</mat-icon>&nbsp;&nbsp;Neue Reservation</mat-chip>
+      </mat-chip-list>
+      <mat-form-field *ngIf="reservation.idReservation" [fxFlex]="20">
+        <input matInput formControlName="idReservation" placeholder="ID"/>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Tage -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="days" placeholder="Tage" type="number" required/>
+        <mat-error *ngIf="form.controls['days'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Preis -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="price" placeholder="Preis" type="number" required/>
+        <mat-error *ngIf="form.controls['price'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Reservation-Nr -->
+      <mat-form-field [fxFlex]="40">
+        <input matInput formControlName="reservationNr" placeholder="Reservation-Nr" required/>
+        <mat-error *ngIf="form.controls['reservationNr'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Abholdatum -->
+      <mat-form-field>
+        <mat-label>Abholdatum</mat-label>
+        <input matInput formControlName="pickUpDate" [matDatepicker]="datepicker">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+        <mat-error *ngIf="form.controls['pickUpDate'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Geleast -->
+        <mat-checkbox formControlName="isLease" color="primary">Geleast</mat-checkbox>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <!-- Kunde -->
+      <mat-form-field [fxFlex]="40">
+        <mat-label>Kunde</mat-label>
+        <mat-select formControlName="customer" placeholder="Kunde" required>
+          <mat-option *ngFor="let customer of customerList" [value]="customer.idCustomer">
+            {{customer.firstname + ' ' + customer.lastname}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['customer'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+
+      <!-- Auto -->
+      <mat-form-field [fxFlex]="40">
+        <mat-label>Auto</mat-label>
+        <mat-select formControlName="car" placeholder="Auto" required>
+          <mat-option *ngFor="let car of carList" [value]="car.idCar">
+            {{car.carMake.carMake + ' ' + car.carName + ' (' + car.carNr + ')'}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.controls['customer'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="5px">
+      <button mat-stroked-button [routerLink]="['/reservation']">Zurück</button>
+      <button mat-flat-button color="primary" [disabled]="form.pristine || form.invalid" (click)="saveReservation()">Speichern</button>
+      <button mat-flat-button color="warn" (click)="deleteReservation()" *ngIf="reservation.idReservation">Löschen</button>
+    </div>
+
+  </div>
+</div>
+

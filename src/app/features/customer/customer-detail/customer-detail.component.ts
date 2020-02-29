@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Customer, CustomerService } from '../../../../generated';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Customer, CustomerService, PlaceService } from '../../../../generated';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,16 +20,25 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
 
   public customer: Customer;
 
+  public placeList: Place[];
+
   public isLoading: boolean;
 
   private _onDestroy = new Subject<void>();
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private customerService: CustomerService,
+              private placeService: PlaceService,
               private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
+    this.placeService.readAllPlaces()
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe((placeList: Place[]) => {
+        this.placeList = placeList;
+      });
     this._loadData();
   }
 
@@ -54,6 +63,7 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
               panelClass: ['cr-snackbar-error']
             });
             this.isLoading = false;
+            this.router.navigate(['/customer']);
           });
       }
     });
@@ -64,8 +74,7 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
       idCustomer: new FormControl({value: this.customer.idCustomer, disabled: true}),
       firstname: new FormControl(this.customer.firstname, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
       lastname: new FormControl(this.customer.lastname, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
-      place: new FormControl(this.customer.place.place, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
-      zipCode: new FormControl(this.customer.place.zipCode, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
+      place: new FormControl(this.customer.place.idPlace, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
       address: new FormControl(this.customer.address, Validators.compose([Validators.maxLength(this.strLimit), Validators.required])),
       addressNr: new FormControl(this.customer.addressNr, Validators.compose([Validators.maxLength(this.strLimit)])),
     });
@@ -75,17 +84,28 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       this.customer.firstname = this.form.get('firstname').value;
       this.customer.lastname = this.form.get('lastname').value;
-      this.customer.place.place = this.form.get('place').value;
-      this.customer.place.zipCode = this.form.get('zipCode').value;
+      this.customer.place.idPlace = this.form.get('place').value;
       this.customer.address = this.form.get('address').value;
       this.customer.addressNr = this.form.get('addressNr').value;
-      this.customerService.updateCustomer(this.customer)
-        .pipe(takeUntil(this._onDestroy))
-        .subscribe(() => {
-          this.snackBar.open('Kunde speichern erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        }, () => {
-          this.snackBar.open('Kunde speichern fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-        });
+      if (this.customer.idCustomer) {
+        this.customerService.updateCustomer(this.customer)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Kunde speichern erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+          }, () => {
+            this.snackBar.open('Kunde speichern fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      } else {
+        this.customerService.addCustomer(this.customer)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe((idCustomer: number) => {
+            this.snackBar.open('Kunde speichern erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.router.navigate(['/customer', idCustomer]);
+          }, () => {
+            this.snackBar.open('Kunde speichern fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+
     }
   }
 
@@ -94,6 +114,7 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._onDestroy))
       .subscribe(() => {
         this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+        this.router.navigate(['/customer']);
       }, () => {
         this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
       });

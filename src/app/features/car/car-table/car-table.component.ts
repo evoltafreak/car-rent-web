@@ -18,7 +18,7 @@ export class CarTableComponent implements OnInit, OnDestroy {
   public title = 'Autoliste';
   public carList: MatTableDataSource<Car>;
 
-  public displayedColumns = ['action', 'idCar', 'carMake', 'carType', 'carName', 'fee'];
+  public displayedColumns = ['action', 'idCar', 'carMake', 'carType', 'carClass', 'carName', 'fee'];
 
   public isLoading: boolean;
 

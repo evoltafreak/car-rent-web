@@ -86,7 +86,7 @@
       <tr mat-footer-row *matFooterRowDef="isFooter ? ['footer'] : []"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons class="mat-elevation-z2"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25" showFirstLastButtons class="mat-elevation-z2"></mat-paginator>
 
   </div>
 

@@ -1,0 +1,113 @@
+<div class="reservation-table" fxLayout="column" fxLayoutGap="10px">
+  <cr-loading-bar [isLoading]="isLoading" text="Reservationen werden geladen"></cr-loading-bar>
+  <div [ngStyle]="{'visibility': isLoading ? 'hidden' : 'visible'}" fxLayout="column" fxLayoutGap="10px">
+
+    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+      <mat-form-field [fxFlex]="40">
+        <input matInput (keyup)="fuzzySearch($event.target.value)" placeholder="Reservationen durchsuchen...">
+      </mat-form-field>
+      <button mat-flat-button color="primary" [routerLink]="['/reservation', 'new']"><mat-icon>add</mat-icon> Reservation hinzufügen</button>
+    </div>
+
+    <table mat-table matSort [dataSource]="reservationList" class="mat-elevation-z2">
+
+      <!-- Header -->
+      <ng-container matColumnDef="header">
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="11">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <h2>{{title}}</h2>
+            <div fxFlex></div>
+            <mat-icon svgIcon="download" (click)="exportCsv()" matTooltip="CSV Export"></mat-icon>
+          </div>
+        </th>
+      </ng-container>
+
+      <!-- Aktion -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Aktion</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-icon [routerLink]="['/reservation', row.idReservation]" color="primary" matTooltip="Reservation bearbeiten">edit
+          </mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- ID -->
+      <ng-container matColumnDef="idReservation">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row"> {{row.idReservation}} </td>
+      </ng-container>
+
+      <!-- Tage -->
+      <ng-container matColumnDef="days">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Tage</th>
+        <td mat-cell *matCellDef="let row"> {{row.days}} </td>
+      </ng-container>
+
+      <!-- Preis -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Preis</th>
+        <td mat-cell *matCellDef="let row"> {{row.price}} </td>
+      </ng-container>
+
+      <!-- Reservation-Nr -->
+      <ng-container matColumnDef="reservationNr">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Reservation-Nr</th>
+        <td mat-cell *matCellDef="let row"> {{row.reservationNr}} </td>
+      </ng-container>
+
+      <!-- Abholdatum -->
+      <ng-container matColumnDef="pickUpDate">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Abholdatum</th>
+        <td mat-cell *matCellDef="let row"> {{row.pickUpDate | date: 'dd.MM.yyyy HH:mm:ss'}} </td>
+      </ng-container>
+
+      <!-- Geleast -->
+      <ng-container matColumnDef="isLease">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Geleast</th>
+        <td mat-cell *matCellDef="let row"> {{row.isLease ? 'Ja' : 'Nein'}} </td>
+      </ng-container>
+
+      <!-- Vorname -->
+      <ng-container matColumnDef="firstname">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Vorname</th>
+        <td mat-cell *matCellDef="let row"> {{row.customer.firstname}} </td>
+      </ng-container>
+
+      <!-- Nachname -->
+      <ng-container matColumnDef="lastname">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Nachname</th>
+        <td mat-cell *matCellDef="let row"> {{row.customer.lastname}} </td>
+      </ng-container>
+
+      <!-- Autoname -->
+      <ng-container matColumnDef="carName">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Autoname</th>
+        <td mat-cell *matCellDef="let row"> {{row.car.carName}} </td>
+      </ng-container>
+
+      <!-- Auto-Nr -->
+      <ng-container matColumnDef="carNr">
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Auto-Nr</th>
+        <td mat-cell *matCellDef="let row"> {{row.car.carNr}} </td>
+      </ng-container>
+
+      <!-- Footer -->
+      <ng-container matColumnDef="footer">
+        <th mat-header-cell *matFooterCellDef [attr.colspan]="11">
+          <div style="font-style: italic">Es wurden keine Daten gefunden...</div>
+        </th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['header']"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-footer-row *matFooterRowDef="isFooter ? ['footer'] : []"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="25" showFirstLastButtons class="mat-elevation-z2"></mat-paginator>
+
+  </div>
+
+</div>
+
+

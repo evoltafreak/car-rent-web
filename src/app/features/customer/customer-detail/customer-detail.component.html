@@ -27,15 +27,14 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="5px">
-      <!-- PLZ -->
+      <!-- PLZ und Ort -->
       <mat-form-field [fxFlex]="40">
-        <input matInput formControlName="zipCode" placeholder="PLZ" required/>
-        <mat-error *ngIf="form.controls['zipCode'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
-      </mat-form-field>
-
-      <!-- Ort -->
-      <mat-form-field [fxFlex]="40">
-        <input matInput formControlName="place" placeholder="Ort" required/>
+        <mat-label>PLZ</mat-label>
+        <mat-select formControlName="place" required>
+          <mat-option *ngFor="let place of placeList" [value]="place.idPlace">
+            {{place.zipCode + ' ' + place.place}}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="form.controls['place'].errors?.required">Bitte füllen Sie das Feld aus.</mat-error>
       </mat-form-field>
     </div>
@@ -57,7 +56,7 @@
     <div fxLayout="row" fxLayoutGap="5px">
       <button mat-stroked-button [routerLink]="['/customer']">Zurück</button>
       <button mat-flat-button color="primary" [disabled]="form.pristine || form.invalid" (click)="saveCustomer()">Speichern</button>
-      <button mat-flat-button color="warn" (click)="deleteCustomer()">Löschen</button>
+      <button mat-flat-button color="warn" (click)="deleteCustomer()" *ngIf="customer.idCustomer">Löschen</button>
     </div>
 
   </div>

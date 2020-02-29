@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { CarService } from './api/car.service';
 import { CustomerService } from './api/customer.service';
+import { PlaceService } from './api/place.service';
 import { ReservationService } from './api/reservation.service';
 
 @NgModule({
