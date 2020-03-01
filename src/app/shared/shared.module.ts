@@ -27,6 +27,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CrDateAdapter } from '../core/cr-date-adapter';
+import { MatDialogModule } from '@angular/material/dialog';
+import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
   providers: [
@@ -68,7 +70,8 @@ import { CrDateAdapter } from '../core/cr-date-adapter';
     MatToolbarModule,
     MatDividerModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
   ],
   exports: [
     CommonModule,
@@ -96,9 +99,10 @@ import { CrDateAdapter } from '../core/cr-date-adapter';
     MatCheckboxModule,
     TableOfContentsComponent,
     LoadingBarComponent,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
   ],
-  declarations: [TableOfContentsComponent, LoadingBarComponent]
+  declarations: [TableOfContentsComponent, LoadingBarComponent, YesNoDialogComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders<SharedModule> {

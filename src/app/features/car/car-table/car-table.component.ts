@@ -2,13 +2,15 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Car, Reservation } from '../../../../generated';
+import { Car } from '../../../../generated';
 import { CarService } from '../../../../generated/api/car.service';
 import { Subject } from 'rxjs';
 import { DateService } from '../../../core/date/date-service';
 import { CsvService } from '../../../core/csv/csv-service';
 import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { YesNoDialogComponent } from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'cr-car-table',
@@ -36,7 +38,8 @@ export class CarTableComponent implements OnInit, OnDestroy {
 
   constructor(private carService: CarService,
               private csvService: CsvService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
 
   }
 
@@ -73,14 +76,23 @@ export class CarTableComponent implements OnInit, OnDestroy {
   }
 
   public deleteCar(idCar: number) {
-    this.carService.deleteCarById(idCar)
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.snackBar.open('Auto löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        this.carList = new MatTableDataSource<Car>(this.carList.data.filter(c => c.idCar !== idCar));
-      }, () => {
-        this.snackBar.open('Auto löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-      });
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      width: '400px',
+      data: {title : 'Auto löschen', text: 'Wollen Sie das Auto wirklich löschen?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.carService.deleteCarById(idCar)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Auto löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.carList = new MatTableDataSource<Car>(this.carList.data.filter(c => c.idCar !== idCar));
+          }, () => {
+            this.snackBar.open('Auto löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+    });
   }
 
   public exportCsv() {

@@ -8,6 +8,8 @@ import { takeUntil } from 'rxjs/operators';
 import { CarService } from '../../../../generated/api/car.service';
 import { CarMake } from '../../../../generated/model/carMake';
 import { CarType } from '../../../../generated/model/carType';
+import { MatDialog } from '@angular/material/dialog';
+import { YesNoDialogComponent } from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'cr-car-detail',
@@ -33,7 +35,8 @@ export class CarDetailComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private carService: CarService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -123,14 +126,24 @@ export class CarDetailComponent implements OnInit, OnDestroy {
   }
 
   public deleteCar() {
-    this.carService.deleteCarById(this.car.idCar)
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.snackBar.open('Auto löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        this.router.navigate(['/car']);
-      }, () => {
-        this.snackBar.open('Auto löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-      });
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      width: '400px',
+      data: {title : 'Auto löschen', text: 'Wollen Sie das Auto wirklich löschen?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+        this.carService.deleteCarById(this.car.idCar)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Auto löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.router.navigate(['/car']);
+          }, () => {
+            this.snackBar.open('Auto löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+    });
   }
 
   ngOnDestroy() {

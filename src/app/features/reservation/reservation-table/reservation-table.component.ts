@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { Customer, Reservation } from '../../../../generated';
+import { Reservation } from '../../../../generated';
 import { Subject } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { takeUntil } from 'rxjs/operators';
 import { DateService } from '../../../core/date/date-service';
 import { ReservationService } from '../../../../generated/api/reservation.service';
+import { MatDialog } from '@angular/material/dialog';
+import { YesNoDialogComponent } from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'cr-reservation-table',
@@ -37,7 +39,8 @@ export class ReservationTableComponent implements OnInit, OnDestroy {
 
   constructor(private reservationService: ReservationService,
               private csvService: CsvService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
 
   }
 
@@ -78,14 +81,25 @@ export class ReservationTableComponent implements OnInit, OnDestroy {
   }
 
   public deleteReservation(idReservation: number) {
-    this.reservationService.deleteReservationById(idReservation)
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.snackBar.open('Reservation löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        this.reservationList = new MatTableDataSource<Reservation>(this.reservationList.data.filter(c => c.idReservation !== idReservation));
-      }, () => {
-        this.snackBar.open('Reservation löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-      });
+
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      width: '400px',
+      data: {title : 'Reservation löschen', text: 'Wollen Sie die Reservation wirklich löschen?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.reservationService.deleteReservationById(idReservation)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Reservation löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.reservationList = new MatTableDataSource<Reservation>(this.reservationList.data.filter(c => c.idReservation !== idReservation));
+          }, () => {
+            this.snackBar.open('Reservation löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+    });
+
   }
 
   public exportCsv() {

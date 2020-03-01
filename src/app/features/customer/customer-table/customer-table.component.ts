@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Car, Customer, CustomerService } from '../../../../generated';
+import { Customer, CustomerService } from '../../../../generated';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
@@ -8,6 +8,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CsvService } from '../../../core/csv/csv-service';
 import { DateService } from '../../../core/date/date-service';
+import { MatDialog } from '@angular/material/dialog';
+import { YesNoDialogComponent } from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'cr-customer-list',
@@ -36,7 +38,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   constructor(private customerService: CustomerService,
               private csvService: CsvService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
 
   }
 
@@ -75,14 +78,23 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   public deleteCustomer(idCustomer: number) {
-    this.customerService.deleteCustomerById(idCustomer)
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        this.customerList = new MatTableDataSource<Customer>(this.customerList.data.filter(c => c.idCustomer !== idCustomer));
-      }, () => {
-        this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-      });
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      width: '400px',
+      data: {title : 'Kunde löschen', text: 'Wollen Sie den Kunden wirklich löschen?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.customerService.deleteCustomerById(idCustomer)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.customerList = new MatTableDataSource<Customer>(this.customerList.data.filter(c => c.idCustomer !== idCustomer));
+          }, () => {
+            this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+    });
   }
 
   public exportCsv() {

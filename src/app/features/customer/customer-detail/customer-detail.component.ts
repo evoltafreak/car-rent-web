@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Place } from '../../../../generated/model/place';
+import { MatDialog } from '@angular/material/dialog';
+import { YesNoDialogComponent } from '../../../shared/yes-no-dialog/yes-no-dialog.component';
 
 @Component({
   selector: 'cr-customer-detail',
@@ -30,7 +32,8 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
               private router: Router,
               private customerService: CustomerService,
               private placeService: PlaceService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -110,14 +113,24 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
   }
 
   public deleteCustomer() {
-    this.customerService.deleteCustomerById(this.customer.idCustomer)
-      .pipe(takeUntil(this._onDestroy))
-      .subscribe(() => {
-        this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
-        this.router.navigate(['/customer']);
-      }, () => {
-        this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
-      });
+    const dialogRef = this.dialog.open(YesNoDialogComponent, {
+      width: '400px',
+      data: {title : 'Kunde löschen', text: 'Wollen Sie den Kunden wirklich löschen?'}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+
+        this.customerService.deleteCustomerById(this.customer.idCustomer)
+          .pipe(takeUntil(this._onDestroy))
+          .subscribe(() => {
+            this.snackBar.open('Kunde löschen erfolgreich.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-success'});
+            this.router.navigate(['/customer']);
+          }, () => {
+            this.snackBar.open('Kunde löschen fehlgeschlagen.', 'OK', {duration: 2000, panelClass: 'cr-snackbar-error'});
+          });
+      }
+    });
   }
 
   ngOnDestroy() {
